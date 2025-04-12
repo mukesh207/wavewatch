@@ -1,3 +1,33 @@
 *.tmp
 *.bak
 ~$*.docx
+
+# Kotlin
+*.iml
+.gradle/
+.idea/
+build/
+out/
+*.log
+
+# C++
+*.o
+*.obj
+*.exe
+*.so
+*.dll
+cmake-build-*/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# JetBrains/Android Studio
+*.apk
+*.aab
+*.cxx/
+local.properties
+
+# Docs
+docs/*.tmp
+docs/~$*
