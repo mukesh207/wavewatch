@@ -1,158 +1,134 @@
-# 📱 Network Analyzer Android App - Functional Requirements Document
 
-## 1. Overview
+# 📘 WaveWatch – Feature Requirements Document (FRD)
 
-**App Name**: *WaveWatch*
+## 🧠 Vision
 
-**Purpose**:  
-To provide Android users with a powerful yet user-friendly tool for monitoring, analyzing, and understanding their mobile network traffic in real time. The app will offer intelligent alerts, security insights, app-wise usage tracking, and privacy recommendations based on the user's traffic patterns.
+WaveWatch is a **privacy-first, no-root mobile network monitoring app** that helps users:
 
----
-
-## 2. Key Features
-
-### 2.1. Real-Time Traffic Monitoring
-- Monitor total mobile and Wi-Fi data usage  
-- Track app-wise data usage in real-time  
-- Track foreground vs background traffic  
-- Show domains/IPs contacted by each app  
-
-### 2.2. Packet Metadata Analysis
-- Capture destination IP, domain, port, and timestamp  
-- Identify protocols (HTTP, HTTPS, DNS, etc.)  
-- View traffic volume per host  
-
-### 2.3. Smart Alerts
-- Alert on unusual background data usage  
-- Alert on communication with suspicious domains or countries  
-- Alert on excessive data by non-active apps  
-- Alert on unsecured (non-HTTPS) connections  
-- Alert if an app suddenly starts sending traffic after being idle  
-
-### 2.4. Security & Privacy Insights
-- Daily/weekly security reports  
-- Suspicious app list based on behavioral patterns  
-- Recommendation to restrict/block certain apps  
-- VPN detection and warnings for insecure Wi-Fi  
-
-### 2.5. Chat-Based Assistant
-- Smart assistant that answers questions like:
-  - “Which app used the most data today?”
-  - “Did any app contact a risky domain?”
-  - “How much data did YouTube use this week?”
-- Conversational UX (ChatGPT-style)  
-- Explain alerts in plain English  
-
-### 2.6. Usage Restriction Tools
-- Option to block background data for apps  
-- Set daily/weekly data limits per app  
-- Auto-restrict apps on alert triggers  
-
-### 2.7. Visualization & Dashboards
-- Pie chart of app-wise data usage  
-- Graph of hourly/daily traffic spikes  
-- Map view of countries contacted  
-
-### 2.8. Settings & Customization
-- Define custom alert rules  
-- Choose monitoring mode (basic vs advanced)  
-- Toggle app permissions and VPN usage  
+- Track real-time network usage
+- Identify security risks
+- Control background activity
+- Understand device behavior across network types
 
 ---
 
-## 3. Architecture Overview
+## 🎯 Core Features
 
-+----------------------------+ 
-| Kotlin UI Layer            | (Android) 
-+------------+---------------+ 
-             | 
-             v 
-+----------------------------+ 
-| Kotlin Shared Module       | 
-| - Logic, Models, Alerts    | 
-+------------+---------------+ 
-             | 
-             v 
-+----------------------------------+ 
-| C++ Backend (JNI Bridge)         | 
-| - Packet metadata parsing        | 
-| - Traffic classification         | 
-+----------------------------------+
+### 1. 📡 Real-Time Network Monitoring
 
+- Track upload/download speed per app
+- Monitor active network interface (Wi-Fi, Mobile, VPN)
+- Visualize protocol usage (TCP, UDP, TLS, QUIC)
 
----
+### 2. 📦 Packet Metadata Analysis
 
-## 4. User Roles & Permissions
+- Detect source/destination IPs & ports
+- Identify DNS queries and their resolution time
+- Monitor TLS handshakes and connection stability
+- Estimate latency and packet loss passively
 
-| Role        | Description                            |
-|-------------|----------------------------------------|
-| Normal User | Full access to app features            |
-| Admin Mode  | Optional debug/log view for developers |
+### 3. 🚨 Smart Alerts
 
----
+- Alert users about:
+  - Sudden traffic spikes
+  - Suspicious foreign IPs
+  - Abnormal background usage
+  - Unknown Bluetooth device connections
+  - Silent BLE scans by inactive apps
 
-## 5. Functional Modules
+### 4. 🔐 Security & Privacy Insights
 
-### 5.1. Packet Sniffing Engine (C++)
-- Uses libpcap/NDK backend  
-- Captures non-sensitive metadata only  
-- Minimal battery and CPU usage  
+- Flag unencrypted HTTP/DNS traffic
+- Detect tracker domains and analytics SDKs
+- Monitor BLE usage for tracking behavior
+- Display score for each app based on privacy leaks
 
-### 5.2. Alert Engine (Kotlin Shared Module)
-- Rule-based matching for alerts  
-- Generates explanations and actions  
+### 5. 📊 Usage Dashboard
 
-### 5.3. Storage Engine
-- SQLite-based  
-- Stores traffic logs, user preferences, alert history  
+- Visualize data consumption hourly, daily, weekly
+- App-wise usage breakdown
+- Bluetooth usage summary: duration, devices, scan frequency
+- Forecasting based on historical trends
 
-### 5.4. Assistant Module
-- Rule-based NLP engine for MVP  
-- Later upgrade to GPT integration  
+### 6. 💬 Chat-based Assistant
 
-### 5.5. UI Layer (Compose for Android)
-- Dashboard, chat screen, reports, graphs, alerts panel  
+- Natural language queries like:
+  - “Which app used the most data last night?”
+  - “Any unknown Bluetooth devices nearby?”
+  - “Show connections made over insecure protocols.”
 
----
+### 7. 🚫 Usage Restriction Tools
 
-## 6. Non-Functional Requirements
-- Minimal permissions (only network + usage stats)  
-- Battery-efficient background monitoring  
-- No root access required  
-- Local data storage (privacy-first)  
-- Optional anonymized logs for cloud backup (future feature)  
+- Automatically block:
+  - Background data for suspicious apps
+  - Bluetooth at night or on low battery
+- Optional App Lock during peak usage
+
+### 8. 🛠️ Developer Tools (Optional in future)
+
+- App inspection mode for devs
+- Visual packet pattern replay for testing connections
 
 ---
 
-## 7. Future Enhancements (Post-MVP)
-- iOS support via Kotlin Multiplatform  
-- LLM integration for smarter assistant  
-- Full packet capture in rooted mode  
-- Cloud sync and web dashboard  
-- Real-time collaborative alert dashboard for families/teams  
+## 🧩 Signal Categories
+
+### A. 📶 Mobile/Wi-Fi Network Signals
+
+| Type            | Examples                                  |
+| --------------- | ----------------------------------------- |
+| Traffic Stats   | Data usage, protocol, per-app metrics     |
+| Connection Info | RTT, latency, port scans, IP profiles     |
+| DNS/TLS Events  | DNS resolution time, TLS handshake errors |
+
+### B. 🔵 Bluetooth Signals (NEW)
+
+| Type               | Examples                                              |
+| ------------------ | ----------------------------------------------------- |
+| Device Events      | Connected/disconnected, MAC, name, signal strength    |
+| Scanning Behavior  | BLE scan frequency, unknown nearby devices            |
+| App-Level Activity | App initiating scan or connection                     |
+| Usage Metrics      | Total BT usage time, data exchanged, background scans |
+
+### C. 📲 System & User Behavior Signals
+
+- Foreground app mapping to network activity
+- Battery drain vs. data usage
+- Device state: screen off, charging, etc.
 
 ---
 
-## 8. Sample Screens (To Be Designed)
-- Home Dashboard with stats  
-- Live Traffic View per app  
-- Chat Assistant Screen  
-- Alert Notification & Action Panel  
-- Security Report Summary  
+## ⚙️ Architecture Highlights
+
+### 🔧 C++ Backend
+
+- High-performance packet analysis engine
+- DNS/TLS parsing and protocol inspection
+- Memory-safe, multi-threaded signal pipeline
+
+### 📱 Kotlin KMP Frontend
+
+- Shared logic across Android/iOS
+- Modern Compose UI for intuitive dashboards
+- Flow-based signal stream using coroutines
+
+### 📦 Signal Collector Modules (Examples)
+
+- `NetworkSignalManager`
+- `BluetoothSignalManager`
+- `AppUsageSignalManager`
+- `DNSResolverSignalEngine`
 
 ---
 
-## 9. Security Considerations
-- End-to-end encrypted storage of logs (if stored)  
-- App sandboxing and no root requirement  
-- Open source transparency for backend engine  
+## 📂 Bluetooth Signal Collector Design
 
----
+### Components
 
-## 10. Conclusion
-
-This app will bridge the gap between high-level tools like **NetGuard** and advanced ones like **Wireshark**, while maintaining accessibility and ease of use. With AI-style interaction and strong security insights, it will empower users to understand and control their digital traffic like never before.
-
----
-
-**Prepared by**: *Mukesh & AI ✨*
+| File/Class                     | Role                                            |
+| ------------------------------ | ----------------------------------------------- |
+| `BluetoothSignalManager`     | Core event handler and scanner                  |
+| `BluetoothAlertEngine`       | Analyzes for background scans, device anomalies |
+| `BluetoothDeviceProfile`     | Stores known device behavior patterns           |
+| `BluetoothUsageStats`        | Logs duration, scan count, app interaction      |
+| `BluetoothRestrictionEngine` | Implements FRD’s restriction rules             |
