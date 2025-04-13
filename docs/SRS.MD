@@ -1,4 +1,3 @@
-
 ### **Software Requirements Specification (SRS)**
 
 #### **1. Introduction**
@@ -31,6 +30,31 @@ WaveWatch is a mobile application designed to monitor and analyze mobile network
 * Real-time alerts for exceeding data usage limits.
 * Alerts for suspicious or potentially malicious network activity.
 * Customizable alert settings based on user preferences.
+
+### 🔔 **Smart Alerts – System Features (SRS)**
+
+#### 3.x Smart Alerts & Kill Switch Control
+
+The system shall provide real-time alerts based on a variety of monitored signals and detected anomalies. These alerts will enable users to monitor activity and take immediate control actions through an in-app **Kill Switch** mechanism.
+
+##### ✅ Alert Conditions include:
+
+* Abnormal or high-volume data usage
+* Suspicious or unknown app-level traffic
+* **Active screen sharing sessions** consuming significant bandwidth
+* **Mobile hotspot (tethering) activation** , including connected devices
+* Bluetooth discovery events or unexpected scanning
+* Background usage of sensitive permissions or services
+
+##### ✅ Alert Capabilities:
+
+* Notify users with contextual information (e.g., app name, traffic stats, device count)
+* Provide actionable suggestions via the chat-based assistant
+* **Enable Kill Switch actions** , allowing users to:
+* Instantly **terminate screen sharing**
+* **Disable mobile hotspot**
+* **Disconnect unknown devices** from hotspot
+* Offer post-action confirmation, impact explanation, and preventive guidance
 
 **2.5 Usage Restriction Tools:**
 

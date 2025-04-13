@@ -1,4 +1,3 @@
-
 ### **System Requirements Document (SRD)**
 
 #### **1. Introduction**
@@ -125,3 +124,5 @@ WaveWatch consists of the following major components:
 * Notifications about suspicious activities will be actionable, with clear steps to either monitor or terminate the activity.
 * **Knowledge of Suspicious Activity** :
 * Users will receive detailed information about suspicious activities before taking action, and feedback afterward to ensure they understand the rationale for the decision made.
+
+---

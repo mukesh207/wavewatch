@@ -1,12 +1,10 @@
-# dWaveWatch: SDLC Document
+# WaveWatch: SDLC Document
 
 ## Project Overview
 
 **WaveWatch** is a mobile application powered by a C++ backend and Kotlin/KMP frontend designed to monitor, analyze, and control mobile network traffic. The app identifies suspicious activities, alerts the user, and allows them to take control actions such as killing or quarantining the threat. It aims to provide security and awareness for all types of mobile users.
 
 ---
-
-## SDLC Phases
 
 ### 1. Requirement Analysis
 
@@ -152,6 +150,5 @@
 ### Contributors
 
 * Solo Developer: Mukesh 👨‍💻 and friendly AI
-* 
 
 ---
