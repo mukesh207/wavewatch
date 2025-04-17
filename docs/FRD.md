@@ -1,79 +1,105 @@
 
-# 📘 WaveWatch – Feature Requirements Document (FRD)
+# 📘 **WaveWatch – Feature Requirements Document (FRD)**
 
-## 🧠 Vision
+---
+
+## 🧠 **Vision**
 
 WaveWatch is a **privacy-first, no-root mobile network monitoring app** that helps users:
 
-- Track real-time network usage
-- Identify security risks
-- Control background activity
-- Understand device behavior across network types
+* Track real-time network usage
+* Identify security risks
+* Control background activity
+* Understand device behavior across network types
+* **Terminate suspicious or malware activities using a Kill Switch** for enhanced security.
 
 ---
 
-## 🎯 Core Features
+## 🎯 **Core Features**
 
-### 1. 📡 Real-Time Network Monitoring
+### 1. 📡 **Real-Time Network Monitoring**
 
-- Track upload/download speed per app
-- Monitor active network interface (Wi-Fi, Mobile, VPN)
-- Visualize protocol usage (TCP, UDP, TLS, QUIC)
+* Track upload/download speed per app
+* Monitor active network interface (Wi-Fi, Mobile, VPN)
+* Visualize protocol usage (TCP, UDP, TLS, QUIC)
 
-### 2. 📦 Packet Metadata Analysis
+### 2. 📦 **Packet Metadata Analysis**
 
-- Detect source/destination IPs & ports
-- Identify DNS queries and their resolution time
-- Monitor TLS handshakes and connection stability
-- Estimate latency and packet loss passively
+* Detect source/destination IPs & ports
+* Identify DNS queries and their resolution time
+* Monitor TLS handshakes and connection stability
+* Estimate latency and packet loss passively
 
-### 3. 🚨 Smart Alerts
+### 3. 🚨 **Smart Alerts**
 
-- Alert users about:
-  - Sudden traffic spikes
-  - Suspicious foreign IPs
-  - Abnormal background usage
-  - Unknown Bluetooth device connections
-  - Silent BLE scans by inactive apps
+WaveWatch shall provide real-time, context-aware alerts based on signal analysis. These alerts will help users identify risks and take action without needing technical expertise.
 
-### 4. 🔐 Security & Privacy Insights
+#### ✅ **Alert Conditions:**
 
-- Flag unencrypted HTTP/DNS traffic
-- Detect tracker domains and analytics SDKs
-- Monitor BLE usage for tracking behavior
-- Display score for each app based on privacy leaks
+* Sudden traffic spikes
+* Suspicious foreign IPs
+* Abnormal background usage
+* Unknown Bluetooth device connections
+* Silent BLE scans by inactive apps
+* **Active screen sharing sessions**
+* **Hotspot (tethering) usage with connected device count**
 
-### 5. 📊 Usage Dashboard
+#### ✅ **Alert Capabilities:**
 
-- Visualize data consumption hourly, daily, weekly
-- App-wise usage breakdown
-- Bluetooth usage summary: duration, devices, scan frequency
-- Forecasting based on historical trends
+* In-app notifications with relevant metadata (app, IP, device, volume)
+* Guidance via the chat-based assistant
+* **Kill Switch Controls:**
+  * Instantly **terminate screen sharing**
+  * **Disable mobile hotspot**
+  * **Disconnect unknown tethered devices**
+  * **Terminate suspicious software or malware** based on behavior analysis
+* **Post-action feedback** including:
+  * Why the action was triggered
+  * What was stopped (e.g., suspicious app or activity)
+  * Risk explanation and future prevention tips
 
-### 6. 💬 Chat-based Assistant
+### 4. 🔐 **Security & Privacy Insights**
 
-- Natural language queries like:
-  - “Which app used the most data last night?”
-  - “Any unknown Bluetooth devices nearby?”
-  - “Show connections made over insecure protocols.”
+* Flag unencrypted HTTP/DNS traffic
+* Detect tracker domains and analytics SDKs
+* Monitor BLE usage for tracking behavior
+* Display score for each app based on privacy leaks
+* **Identify and flag suspicious apps or processes that may be malware.**
 
-### 7. 🚫 Usage Restriction Tools
+### 5. 📊 **Usage Dashboard**
 
-- Automatically block:
-  - Background data for suspicious apps
-  - Bluetooth at night or on low battery
-- Optional App Lock during peak usage
+* Visualize data consumption hourly, daily, weekly
+* App-wise usage breakdown
+* Bluetooth usage summary: duration, devices, scan frequency
+* Forecasting based on historical trends
 
-### 8. 🛠️ Developer Tools (Optional in future)
+### 6. 💬 **Chat-based Assistant**
 
-- App inspection mode for devs
-- Visual packet pattern replay for testing connections
+* Natural language queries like:
+  * “Which app used the most data last night?”
+  * “Any unknown Bluetooth devices nearby?”
+  * “Show connections made over insecure protocols.”
+  * “Which app is consuming the most battery and data?”
+  * “What suspicious apps are running in the background?”
+
+### 7. 🚫 **Usage Restriction Tools**
+
+* Automatically block:
+  * Background data for suspicious apps
+  * Bluetooth at night or on low battery
+* Optional App Lock during peak usage
+* **Terminating suspicious software** via the **Kill Switch** based on user settings
+
+### 8. 🛠️ **Developer Tools (Optional in Future)**
+
+* App inspection mode for devs
+* Visual packet pattern replay for testing connections
 
 ---
 
-## 🧩 Signal Categories
+## 🧩 **Signal Categories**
 
-### A. 📶 Mobile/Wi-Fi Network Signals
+### A. 📶 **Mobile/Wi-Fi Network Signals**
 
 | Type            | Examples                                  |
 | --------------- | ----------------------------------------- |
@@ -81,7 +107,7 @@ WaveWatch is a **privacy-first, no-root mobile network monitoring app** that hel
 | Connection Info | RTT, latency, port scans, IP profiles     |
 | DNS/TLS Events  | DNS resolution time, TLS handshake errors |
 
-### B. 🔵 Bluetooth Signals (NEW)
+### B. 🔵 **Bluetooth Signals** (NEW)
 
 | Type               | Examples                                              |
 | ------------------ | ----------------------------------------------------- |
@@ -90,45 +116,50 @@ WaveWatch is a **privacy-first, no-root mobile network monitoring app** that hel
 | App-Level Activity | App initiating scan or connection                     |
 | Usage Metrics      | Total BT usage time, data exchanged, background scans |
 
-### C. 📲 System & User Behavior Signals
+### C. 📲 **System & User Behavior Signals**
 
-- Foreground app mapping to network activity
-- Battery drain vs. data usage
-- Device state: screen off, charging, etc.
-
----
-
-## ⚙️ Architecture Highlights
-
-### 🔧 C++ Backend
-
-- High-performance packet analysis engine
-- DNS/TLS parsing and protocol inspection
-- Memory-safe, multi-threaded signal pipeline
-
-### 📱 Kotlin KMP Frontend
-
-- Shared logic across Android/iOS
-- Modern Compose UI for intuitive dashboards
-- Flow-based signal stream using coroutines
-
-### 📦 Signal Collector Modules (Examples)
-
-- `NetworkSignalManager`
-- `BluetoothSignalManager`
-- `AppUsageSignalManager`
-- `DNSResolverSignalEngine`
+* Foreground app mapping to network activity
+* Battery drain vs. data usage
+* Device state: screen off, charging, etc.
 
 ---
 
-## 📂 Bluetooth Signal Collector Design
+## ⚙️ **Architecture Highlights**
+
+### 🔧 **C++ Backend**
+
+* High-performance packet analysis engine
+* DNS/TLS parsing and protocol inspection
+* Memory-safe, multi-threaded signal pipeline
+
+### 📱 **Kotlin KMP Frontend**
+
+* Shared logic across Android/iOS
+* Modern Compose UI for intuitive dashboards
+* Flow-based signal stream using coroutines
+
+### 📦 **Signal Collector Modules (Examples)**
+
+* `NetworkSignalManager`
+* `BluetoothSignalManager`
+* `AppUsageSignalManager`
+* `DNSResolverSignalEngine`
+
+---
+
+## 📂 **Bluetooth Signal Collector Design**
 
 ### Components
 
-| File/Class                     | Role                                            |
-| ------------------------------ | ----------------------------------------------- |
-| `BluetoothSignalManager`     | Core event handler and scanner                  |
-| `BluetoothAlertEngine`       | Analyzes for background scans, device anomalies |
-| `BluetoothDeviceProfile`     | Stores known device behavior patterns           |
-| `BluetoothUsageStats`        | Logs duration, scan count, app interaction      |
-| `BluetoothRestrictionEngine` | Implements FRD’s restriction rules             |
+| File/Class                     | Role                                                                   |
+| ------------------------------ | ---------------------------------------------------------------------- |
+| `BluetoothSignalManager`     | Core event handler and scanner                                         |
+| `BluetoothAlertEngine`       | Analyzes for background scans, device anomalies                        |
+| `BluetoothDeviceProfile`     | Stores known device behavior patterns                                  |
+| `BluetoothUsageStats`        | Logs duration, scan count, app interaction                             |
+| `BluetoothRestrictionEngine` | Implements FRD’s restriction rules                                    |
+| `BluetoothMalwareScanEngine` | Identifies suspicious Bluetooth activity for kill switch functionality |
+
+---
+
+This updated FRD now includes the **Kill Switch** feature to allow users to terminate suspicious software and malware activities, along with providing detailed alerts, feedback, and control over malicious behavior.

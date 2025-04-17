@@ -1,10 +1,9 @@
+
 ### **Software Requirements Specification (SRS)**
 
 #### **1. Introduction**
 
 WaveWatch is a mobile application designed to monitor and analyze mobile network traffic in real-time, focusing on network performance, security, and data usage management. The app provides users with real-time alerts, metadata analysis, and smart actions to control suspicious activities on their mobile networks.
-
----
 
 #### **2. Functional Requirements**
 
@@ -31,30 +30,31 @@ WaveWatch is a mobile application designed to monitor and analyze mobile network
 * Alerts for suspicious or potentially malicious network activity.
 * Customizable alert settings based on user preferences.
 
-### 🔔 **Smart Alerts – System Features (SRS)**
+---
 
-#### 3.x Smart Alerts & Kill Switch Control
+### **🔔 Smart Alerts – System Features (SRS)**
 
-The system shall provide real-time alerts based on a variety of monitored signals and detected anomalies. These alerts will enable users to monitor activity and take immediate control actions through an in-app **Kill Switch** mechanism.
+**3.x Smart Alerts & Kill Switch Control**
+The system shall provide real-time alerts based on a variety of monitored signals and detected anomalies. These alerts will enable users to monitor activity and take immediate control actions through an in-app Kill Switch mechanism.
 
-##### ✅ Alert Conditions include:
+**✅ Alert Conditions include:**
 
-* Abnormal or high-volume data usage
-* Suspicious or unknown app-level traffic
-* **Active screen sharing sessions** consuming significant bandwidth
-* **Mobile hotspot (tethering) activation** , including connected devices
-* Bluetooth discovery events or unexpected scanning
-* Background usage of sensitive permissions or services
+* Abnormal or high-volume data usage.
+* Suspicious or unknown app-level traffic.
+* Active screen sharing sessions consuming significant bandwidth.
+* Mobile hotspot (tethering) activation, including connected devices.
+* Bluetooth discovery events or unexpected scanning.
+* Background usage of sensitive permissions or services.
 
-##### ✅ Alert Capabilities:
+**✅ Alert Capabilities:**
 
-* Notify users with contextual information (e.g., app name, traffic stats, device count)
-* Provide actionable suggestions via the chat-based assistant
-* **Enable Kill Switch actions** , allowing users to:
-* Instantly **terminate screen sharing**
-* **Disable mobile hotspot**
-* **Disconnect unknown devices** from hotspot
-* Offer post-action confirmation, impact explanation, and preventive guidance
+* Notify users with contextual information (e.g., app name, traffic stats, device count).
+* Provide actionable suggestions via the chat-based assistant.
+* Enable Kill Switch actions, allowing users to:
+  * Instantly terminate screen sharing.
+  * Disable mobile hotspot.
+  * Disconnect unknown devices from hotspot.
+* Offer post-action confirmation, impact explanation, and preventive guidance.
 
 **2.5 Usage Restriction Tools:**
 
@@ -68,21 +68,33 @@ The system shall provide real-time alerts based on a variety of monitored signal
 
 **2.7 Suspicious Activity Knowledge:**
 
-* **Before Killing Suspicious Activity:**
-  * The app will notify the user when suspicious activity is detected, providing detailed information such as:
+*Before Killing Suspicious Activity:*
 
-    * **Type of Activity** : Unusual outbound traffic, unauthorized app behavior, excessive data consumption, etc.
-    * **Suspicious App/Process** : The app or process causing the suspicious activity.
-    * **Reason for Alert** : Explanation of why the activity is considered suspicious, based on traffic patterns or known security risks.
-    * **Potential Risks** : Risks of leaving the suspicious activity unchecked, such as data leakage, malware, or unauthorized access.
+* The app will notify the user when suspicious activity is detected, providing detailed information such as:
+  * **Type of Activity** : Unusual outbound traffic, unauthorized app behavior, excessive data consumption, etc.
+  * **Suspicious App/Process** : The app or process causing the suspicious activity.
+  * **Reason for Alert** : Explanation of why the activity is considered suspicious, based on traffic patterns or known security risks.
+  * **Potential Risks** : Risks of leaving the suspicious activity unchecked, such as data leakage, malware, or unauthorized access.
 
-    **Alert Example** : “Suspicious app detected: App X has been consuming excessive data. It may be trying to upload personal data without your permission.”
-* **After Killing Suspicious Activity:**
-  * After the user terminates the suspicious activity, the app will:
-    * Provide a  **confirmation message** : “Suspicious app X has been terminated to prevent unauthorized data usage.”
-    * Display a  **post-action explanation** : Describe the action taken and the reason behind it (e.g., "App X was using unusual network traffic and could compromise your privacy.").
-    * Provide  **future recommendations** : “Consider reviewing app permissions or running a security scan to ensure your device is secure.”
-    * Inform the user of the **impact on device functionality** (if applicable): “This action may impact the app’s ability to sync data until reconfigured.”
+**Example Alert:**
+
+“Suspicious app detected: App X has been consuming excessive data. It may be trying to upload personal data without your permission.”
+
+*After Killing Suspicious Activity:*
+
+* After the user terminates the suspicious activity, the app will:
+  * Provide a confirmation message:
+
+    “Suspicious app X has been terminated to prevent unauthorized data usage.”
+  * Display a post-action explanation:
+
+    “App X was using unusual network traffic and could compromise your privacy.”
+  * Provide future recommendations:
+
+    “Consider reviewing app permissions or running a security scan to ensure your device is secure.”
+  * Inform the user of the impact on device functionality (if applicable):
+
+    “This action may impact the app’s ability to sync data until reconfigured.”
 
 ---
 
@@ -107,11 +119,11 @@ The system shall provide real-time alerts based on a variety of monitored signal
 
 #### **5. User Stories**
 
-1. **As an end user** , I want to monitor my data usage in real-time so that I can avoid exceeding my data limit.
-2. **As a mobile network user** , I want to receive alerts when suspicious network activity is detected so that I can protect my privacy.
-3. **As an app user** , I want to be able to restrict mobile data usage and set limits for specific apps to avoid high data consumption.
-4. **As a security-conscious individual** , I want to understand why an activity is suspicious before I take action so that I can make informed decisions.
-5. **As a user** , I want the app to provide feedback and recommendations after terminating suspicious activities so that I can ensure my device’s security.
+* **As an end user** , I want to monitor my data usage in real-time so that I can avoid exceeding my data limit.
+* **As a mobile network user** , I want to receive alerts when suspicious network activity is detected so that I can protect my privacy.
+* **As an app user** , I want to be able to restrict mobile data usage and set limits for specific apps to avoid high data consumption.
+* **As a security-conscious individual** , I want to understand why an activity is suspicious before I take action so that I can make informed decisions.
+* **As a user** , I want the app to provide feedback and recommendations after terminating suspicious activities so that I can ensure my device’s security.
 
 ---
 
@@ -136,3 +148,7 @@ The system shall provide real-time alerts based on a variety of monitored signal
 * **Device Compatibility** : Different devices may present compatibility challenges due to variations in mobile network stack implementations.
 * **Privacy Concerns** : Handling sensitive user data will require strong security measures to prevent breaches.
 * **Performance** : Real-time data analysis may impact performance, particularly on low-end smartphones.
+
+---
+
+This **SRS** should be more structured, with clear bullet points and headings to make each section easier to navigate.

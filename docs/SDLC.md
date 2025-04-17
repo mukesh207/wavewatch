@@ -1,14 +1,16 @@
-# WaveWatch: SDLC Document
-
-## Project Overview
-
-**WaveWatch** is a mobile application powered by a C++ backend and Kotlin/KMP frontend designed to monitor, analyze, and control mobile network traffic. The app identifies suspicious activities, alerts the user, and allows them to take control actions such as killing or quarantining the threat. It aims to provide security and awareness for all types of mobile users.
+# **WaveWatch: SDLC Document**
 
 ---
 
-### 1. Requirement Analysis
+## **Project Overview**
 
-#### Functional Requirements
+**WaveWatch** is a mobile application powered by a C++ backend and Kotlin/KMP frontend designed to monitor, analyze, and control mobile network traffic. The app identifies suspicious activities, alerts the user, and allows them to take control actions such as killing or quarantining the threat. It aims to provide security and awareness for all types of mobile users, with additional features such as a **Kill Switch** to terminate suspicious activities in real-time.
+
+---
+
+### 1. **Requirement Analysis**
+
+#### **Functional Requirements**
 
 * Monitor network traffic (WiFi, Bluetooth, Mobile Data).
 * Detect and classify suspicious activities in real time.
@@ -20,8 +22,10 @@
 * Display history logs and analytics of past incidents.
 * Seamless user experience with multi-platform support via Kotlin KMP.
 * Backend built in C++ for efficiency and performance.
+* **New** : Implement "Kill Switch" functionality for terminating suspicious or malware-related activities.
+* **New** : Include detailed information, including explanations of threat activity and security recommendations after action is taken.
 
-#### Non-Functional Requirements
+#### **Non-Functional Requirements**
 
 * Platform compatibility: Android, iOS.
 * High performance for real-time traffic analysis.
@@ -31,9 +35,9 @@
 
 ---
 
-### 2. System Design
+### 2. **System Design**
 
-#### High-Level Architecture
+#### **High-Level Architecture**
 
 * **Frontend** : Kotlin KMP-based app with platform-specific UI support.
 * **Backend** : C++ modules analyzing and processing low-level traffic data.
@@ -41,98 +45,104 @@
 * **Notification Layer** : Manages alerts, warnings, and user interaction.
 * **Database** : Local (SQLite or Room DB) for logs/history.
 * **Cloud Sync (Optional)** : For user backup and report sharing.
-
-#### New Features Incorporated
-
-* User-controlled "Kill Switch" for detected threats.
+* **New Features** :
+* **User-controlled "Kill Switch"** for detected threats.
 * Educational UI elements showing "What is this activity?", "Why it’s dangerous", "What we did".
-* Modular backend to plug in more analysis models (e.g., ML in future).
+* Modular backend to plug in more analysis models (e.g., ML in the future).
 * UI toggle to enable/disable specific network scanners.
 
 ---
 
-### 3. Implementation
+### 3. **Implementation**
 
-#### Development Tools
+#### **Development Tools**
 
-* **Frontend** : Kotlin, Jetpack Compose, Swift (if needed)
-* **Backend** : C++ (optimized with CMake)
-* **Build System** : Gradle, CMake
-* **CI/CD** : GitHub Actions
-* **VCS** : Git, GitHub
-* **Testing** : JUnit, KotlinTest, gtest (for C++)
+* **Frontend** : Kotlin, Jetpack Compose, Swift (if needed).
+* **Backend** : C++ (optimized with CMake).
+* **Build System** : Gradle, CMake.
+* **CI/CD** : GitHub Actions.
+* **VCS** : Git, GitHub.
+* **Testing** : JUnit, KotlinTest, gtest (for C++).
 
-#### Modules
+#### **Modules**
 
 * `network-monitor`: Packet capture and classification.
 * `suspicion-engine`: Analyze and match patterns.
 * `notification-core`: Generates alert and user prompts.
 * `control-center`: Allows user to take action (Kill/Ignore).
 * `info-dash`: Summary, reports, education, and logs.
+* **New** : `malware-detection`: Identifies suspicious activities and triggers the "Kill Switch" as needed.
 
 ---
 
-### 4. Testing
+### 4. **Testing**
 
-#### Testing Strategy
+#### **Testing Strategy**
 
-* **Unit Testing** : Core functions in Kotlin and C++
-* **Integration Testing** : Kotlin ↔ C++ modules
-* **UI Testing** : Espresso, Compose Test, XCUITest (iOS)
-* **Security Testing** : Injection handling, permissions abuse
-* **Performance Testing** : Load testing of background scanners
+* **Unit Testing** : Core functions in Kotlin and C++.
+* **Integration Testing** : Kotlin ↔ C++ modules.
+* **UI Testing** : Espresso, Compose Test, XCUITest (iOS).
+* **Security Testing** : Injection handling, permissions abuse, Kill Switch functionality.
+* **Performance Testing** : Load testing of background scanners, network traffic monitoring, and UI response under high load.
+* **New** : Test "Kill Switch" functionality for immediate termination of suspicious activities and malware.
 
-#### Example Test Cases
+#### **Example Test Cases**
 
 * Suspicious device triggers a notification.
-* User presses “Kill” and the activity is terminated.
+* User presses “Kill” and the activity is terminated successfully.
 * Information is correctly shown before/after action.
 * App doesn't crash during concurrent scans.
+* Verify that all malicious activities are terminated and logs are updated accordingly.
+* Ensure the "Kill Switch" displays pre- and post-action summaries accurately.
 
 ---
 
-### 5. Deployment
+### 5. **Deployment**
 
-#### Target Platforms
+#### **Target Platforms**
 
 * Android 10+
 * iOS 14+
 
-#### Release Plan
+#### **Release Plan**
 
-* Internal Alpha → Closed Beta → Public Beta → Release v1.0
+* **Internal Alpha** → **Closed Beta** → **Public Beta** →  **Release v1.0** .
 * Progressive rollout via Play Store and TestFlight.
+* **New** : Provide an optional beta feature for **Kill Switch** testing with select users before final release.
 
-#### DevOps
+#### **DevOps**
 
-* CI/CD setup using GitHub Actions
-* Version tagging: `v1.0.0`, `v1.1.0-beta`
-* GitHub Releases for major updates
+* CI/CD setup using GitHub Actions.
+* Version tagging: `v1.0.0`, `v1.1.0-beta`.
+* GitHub Releases for major updates.
+* **New** : Ensure CI/CD pipeline includes tests for "Kill Switch" feature.
 
 ---
 
-### 6. Maintenance
+### 6. **Maintenance**
 
 * Monitor crash reports and logs.
 * Collect feedback from users for improvements.
 * Weekly updates during early stages.
 * Monthly patches after release stabilization.
 * Add-on modules and threat signature updates via OTA.
+* **New** : Update Kill Switch signatures to identify new threats in future updates.
 
 ---
 
-### 7. Documentation
+### 7. **Documentation**
 
-* SRS (Software Requirement Spec)
-* SDD (System Design Doc)
-* SDLC (This file)
-* README, Wiki
-* Security & Privacy Policy
-* API reference (if backend modules exposed)
+* **SRS (Software Requirement Spec)** .
+* **SDD (System Design Doc)** .
+* **SDLC (This file)** .
+* README, Wiki.
+* Security & Privacy Policy.
+* **API reference (if backend modules exposed)** .
+* **New** : Document and provide tutorials for users on how the "Kill Switch" works, with example scenarios.
 
 ---
 
-### 8. Project Timeline (March 2025 – February 2026)
+### 8. **Project Timeline (March 2025 – February 2026)**
 
 | Phase                                                | Timeframe     |
 | ---------------------------------------------------- | ------------- |
@@ -147,8 +157,6 @@
 
 ---
 
-### Contributors
+### **Contributors**
 
 * Solo Developer: Mukesh 👨‍💻 and friendly AI
-
----
