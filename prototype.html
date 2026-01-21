@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WaveWatch - Network & Bluetooth Monitor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 414px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 20px 20px 15px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .status-indicator {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 12px;
+            height: 12px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            background: none;
+            border: none;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tab.active {
+            background: white;
+            color: #4facfe;
+            border-bottom: 2px solid #4facfe;
+        }
+
+        .nav-tab:hover {
+            background: #e9ecef;
+        }
+
+        .content {
+            padding: 20px;
+            min-height: calc(100vh - 140px);
+        }
+
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .activity-section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .activity-list {
+            background: #f8f9fa;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .activity-item {
+            padding: 15px;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-info {
+            flex: 1;
+        }
+
+        .activity-name {
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+
+        .activity-details {
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .activity-status {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .status-safe {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-danger {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .alert-card {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .alert-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .alert-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+        }
+
+        .alert-title {
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .alert-time {
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .alert-description {
+            font-size: 14px;
+            margin-bottom: 15px;
+            color: #495057;
+        }
+
+        .alert-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #4facfe;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .chat-container {
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-messages {
+            flex: 1;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            overflow-y: auto;
+        }
+
+        .chat-message {
+            margin-bottom: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-bubble {
+            max-width: 70%;
+            padding: 10px 15px;
+            border-radius: 18px;
+            font-size: 14px;
+        }
+
+        .message-bubble.assistant {
+            background: #e9ecef;
+            color: #333;
+        }
+
+        .message-bubble.user {
+            background: #4facfe;
+            color: white;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .send-btn {
+            background: #4facfe;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+
+        .toggle {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: #ccc;
+            border-radius: 13px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .toggle.active {
+            background: #4facfe;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        .toggle.active .toggle-slider {
+            transform: translateX(24px);
+        }
+
+        .kill-switch {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .kill-btn {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            border: none;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 65, 108, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .kill-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .kill-btn:active {
+            transform: scale(0.95);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #e9ecef;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #4facfe;
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="status-indicator"></div>
+            <h1>WaveWatch</h1>
+            <p>Network & Bluetooth Monitor</p>
+        </header>
+
+        <nav class="nav-tabs">
+            <button class="nav-tab active" data-tab="dashboard">Dashboard</button>
+            <button class="nav-tab" data-tab="alerts">Alerts</button>
+            <button class="nav-tab" data-tab="assistant">Assistant</button>
+            <button class="nav-tab" data-tab="settings">Settings</button>
+        </nav>
+
+        <div class="content">
+            <!-- Dashboard Tab -->
+            <div id="dashboard" class="tab-content">
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="networkCount">23</div>
+                        <div class="stat-label">Network Connections</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="bluetoothCount">5</div>
+                        <div class="stat-label">Bluetooth Devices</div>
+                    </div>
+                </div>
+
+                <div class="activity-section">
+                    <h3 class="section-title">🌐 Network Activity</h3>
+                    <div class="activity-list" id="networkActivity">
+                        <div class="activity-item">
+                            <div class="activity-info">
+                                <div class="activity-name">WhatsApp</div>
+                                <div class="activity-details">157.240.235.60 • 24.3 MB/s</div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 75%"></div>
+                                </div>
+                            </div>
+                            <span class="activity-status status-safe">Safe</span>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-info">
+                                <div class="activity-name">Chrome</div>
+                                <div class="activity-details">142.250.191.14 • 12.8 MB/s</div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 45%"></div>
+                                </div>
+                            </div>
+                            <span class="activity-status status-safe">Safe</span>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-info">
+                                <div class="activity-name">Unknown Process</div>
+                                <div class="activity-details">203.124.45.12 • 8.2 MB/s</div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 30%"></div>
+                                </div>
+                            </div>
+                            <span class="activity-status status-warning">Suspicious</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="activity-section">
+                    <h3 class="section-title">📶 Bluetooth Activity</h3>
+                    <div class="activity-list" id="bluetoothActivity">
+                        <div class="activity-item">
+                            <div class="activity-info">
+                                <div class="activity-name">AirPods Pro</div>
+                                <div class="activity-details">Connected • Audio streaming</div>
+                            </div>
+                            <span class="activity-status status-safe">Safe</span>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-info">
+                                <div class="activity-name">Apple Watch</div>
+                                <div class="activity-details">Connected • Data sync</div>
+                            </div>
+                            <span class="activity-status status-safe">Safe</span>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-info">
+                                <div class="activity-name">Unknown Device</div>
+                                <div class="activity-details">Attempting connection</div>
+                            </div>
+                            <span class="activity-status status-danger">Blocked</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="kill-switch">
+                    <button class="kill-btn" id="killSwitch">
+                        KILL<br>SWITCH
+                    </button>
+                    <p style="margin-top: 15px; font-size: 14px; color: #6c757d;">
+                        Emergency stop for suspicious connections
+                    </p>
+                </div>
+            </div>
+
+            <!-- Alerts Tab -->
+            <div id="alerts" class="tab-content hidden">
+                <div class="alert-card">
+                    <div class="alert-header">
+                        <div class="alert-icon" style="background: #dc3545;">⚠️</div>
+                        <div class="alert-title">Suspicious Network Activity</div>
+                        <div class="alert-time">2 min ago</div>
+                    </div>
+                    <div class="alert-description">
+                        An unknown process is sending large amounts of data to an unrecognized server (203.124.45.12). This could indicate malware or data exfiltration.
+                    </div>
+                    <div class="alert-actions">
+                        <button class="btn btn-danger" onclick="blockConnection('203.124.45.12')">Block Connection</button>
+                        <button class="btn btn-secondary" onclick="dismissAlert(this)">Dismiss</button>
+                    </div>
+                </div>
+
+                <div class="alert-card">
+                    <div class="alert-header">
+                        <div class="alert-icon" style="background: #ffc107;">⚡</div>
+                        <div class="alert-title">High Battery Usage</div>
+                        <div class="alert-time">15 min ago</div>
+                    </div>
+                    <div class="alert-description">
+                        Background network activity is consuming 23% of your battery. Consider optimizing app permissions.
+                    </div>
+                    <div class="alert-actions">
+                        <button class="btn btn-primary" onclick="optimizeBattery()">Optimize Now</button>
+                        <button class="btn btn-secondary" onclick="dismissAlert(this)">Dismiss</button>
+                    </div>
+                </div>
+
+                <div class="alert-card">
+                    <div class="alert-header">
+                        <div class="alert-icon" style="background: #17a2b8;">📶</div>
+                        <div class="alert-title">New Bluetooth Device</div>
+                        <div class="alert-time">1 hour ago</div>
+                    </div>
+                    <div class="alert-description">
+                        A new Bluetooth device "iPhone-John" is trying to connect. Allow or block this connection?
+                    </div>
+                    <div class="alert-actions">
+                        <button class="btn btn-primary" onclick="allowBluetooth('iPhone-John')">Allow</button>
+                        <button class="btn btn-danger" onclick="blockBluetooth('iPhone-John')">Block</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assistant Tab -->
+            <div id="assistant" class="tab-content hidden">
+                <div class="chat-container">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="chat-message">
+                            <div class="message-bubble assistant">
+                                Hi! I'm your WaveWatch assistant. I can help you understand network alerts, optimize your device's performance, and answer questions about your connectivity. What would you like to know?
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-input">
+                        <input type="text" id="chatInput" placeholder="Ask me anything about your network activity...">
+                        <button class="send-btn" onclick="sendMessage()">📨</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settings" class="tab-content hidden">
+                <div class="settings-item">
+                    <div>
+                        <strong>Real-time Monitoring</strong>
+                        <div style="font-size: 12px; color: #6c757d;">Monitor network and Bluetooth activity</div>
+                    </div>
+                    <div class="toggle active" onclick="toggleSetting(this)">
+                        <div class="toggle-slider"></div>
+                    </div>
+                </div>
+
+                <div class="settings-item">
+                    <div>
+                        <strong>Smart Alerts</strong>
+                        <div style="font-size: 12px; color: #6c757d;">Get notified of suspicious activities</div>
+                    </div>
+                    <div class="toggle active" onclick="toggleSetting(this)">
+                        <div class="toggle-slider"></div>
+                    </div>
+                </div>
+
+                <div class="settings-item">
+                    <div>
+                        <strong>Auto-Block Threats</strong>
+                        <div style="font-size: 12px; color: #6c757d;">Automatically block known malicious connections</div>
+                    </div>
+                    <div class="toggle" onclick="toggleSetting(this)">
+                        <div class="toggle-slider"></div>
+                    </div>
+                </div>
+
+                <div class="settings-item">
+                    <div>
+                        <strong>Battery Optimization</strong>
+                        <div style="font-size: 12px; color: #6c757d;">Reduce background monitoring to save battery</div>
+                    </div>
+                    <div class="toggle" onclick="toggleSetting(this)">
+                        <div class="toggle-slider"></div>
+                    </div>
+                </div>
+
+                <div class="settings-item">
+                    <div>
+                        <strong>Data Usage Tracking</strong>
+                        <div style="font-size: 12px; color: #6c757d;">Monitor data consumption by app</div>
+                    </div>
+                    <div class="toggle active" onclick="toggleSetting(this)">
+                        <div class="toggle-slider"></div>
+                    </div>
+                </div>
+
+                <div class="settings-item">
+                    <div>
+                        <strong>Notification Sounds</strong>
+                        <div style="font-size: 12px; color: #6c757d;">Play sounds for critical alerts</div>
+                    </div>
+                    <div class="toggle active" onclick="toggleSetting(this)">
+                        <div class="toggle-slider"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching functionality
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+                
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                const tabName = tab.getAttribute('data-tab');
+                document.getElementById(tabName).classList.remove('hidden');
+            });
+        });
+
+        // Kill Switch functionality
+        document.getElementById('killSwitch').addEventListener('click', function() {
+            this.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
+            this.innerHTML = 'STOPPED<br>THREATS';
+            this.style.boxShadow = '0 4px 15px rgba(40, 167, 69, 0.4)';
+            
+            // Show notification
+            alert('All suspicious connections have been terminated!');
+            
+            // Reset after 3 seconds
+            setTimeout(() => {
+                this.style.background = 'linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%)';
+                this.innerHTML = 'KILL<br>SWITCH';
+                this.style.boxShadow = '0 4px 15px rgba(255, 65, 108, 0.4)';
+            }, 3000);
+        });
+
+        // Chat functionality
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                addMessage(message, 'user');
+                input.value = '';
+                
+                // Simulate assistant response
+                setTimeout(() => {
+                    const responses = [
+                        "Based on your network activity, I recommend blocking the connection to 203.124.45.12 as it shows suspicious behavior patterns.",
+                        "Your device is currently secure! The high data usage from WhatsApp is normal for video calls.",
+                        "I notice you have 3 unknown Bluetooth devices nearby. Would you like me to help you identify them?",
+                        "Your battery optimization settings look good. Consider enabling auto-block for even better security.",
+                        "That's a great question! Network monitoring helps protect your privacy by showing you exactly what data is being transmitted."
+                    ];
+                    
+                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                    addMessage(randomResponse, 'assistant');
+                }, 1000);
+            }
+        }
+
+        function addMessage(text, sender) {
+            const messagesContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${sender}`;
+            
+            const bubbleDiv = document.createElement('div');
+            bubbleDiv.className = `message-bubble ${sender}`;
+            bubbleDiv.textContent = text;
+            
+            messageDiv.appendChild(bubbleDiv);
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Allow Enter key to send messages
+        document.getElementById('chatInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Settings toggle functionality
+        function toggleSetting(toggle) {
+            toggle.classList.toggle('active');
+        }
+
+        // Alert actions
+        function blockConnection(ip) {
+            alert(`Connection to ${ip} has been blocked!`);
+            // Update network activity list to show blocked status
+        }
+
+        function dismissAlert(button) {
+            button.closest('.alert-card').style.display = 'none';
+        }
+
+        function optimizeBattery() {
+            alert('Battery optimization applied! Background network monitoring reduced.');
+        }
+
+        function allowBluetooth(device) {
+            alert(`Bluetooth connection to ${device} has been allowed.`);
+        }
+
+        function blockBluetooth(device) {
+            alert(`Bluetooth connection to ${device} has been blocked.`);
+        }
+
+        // Simulate real-time updates
+        function updateStats() {
+            const networkCount = document.getElementById('networkCount');
+            const bluetoothCount = document.getElementById('bluetoothCount');
+            
+            // Random fluctuations
+            const currentNetwork = parseInt(networkCount.textContent);
+            const currentBluetooth = parseInt(bluetoothCount.textContent);
+            
+            networkCount.textContent = Math.max(15, currentNetwork + Math.floor(Math.random() * 6) - 3);
+            bluetoothCount.textContent = Math.max(2, currentBluetooth + Math.floor(Math.random() * 3) - 1);
+        }
+
+        // Update stats every 5 seconds
+        setInterval(updateStats, 5000);
+
+        // Simulate progress bar animations
+        function animateProgressBars() {
+            document.querySelectorAll('.progress-fill').forEach(bar => {
+                const currentWidth = parseInt(bar.style.width);
+                const newWidth = Math.max(10, Math.min(90, currentWidth + Math.floor(Math.random() * 20) - 10));
+                bar.style.width = newWidth + '%';
+            });
+        }
+
+        // Animate progress bars every 3 seconds
+        setInterval(animateProgressBars, 3000);
+    </script>
+</body>
+</html>

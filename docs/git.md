@@ -1,4 +1,3 @@
-Here’s an enhanced version of the **Git Management Instructions** for WaveWatch, which includes  **File Path Structure** ,  **Branching Strategy** , and  **Commit Message Guidelines** : Git Management for WaveWatch
 
 ## 1. File Path Structure
 
@@ -138,7 +137,7 @@ Commit messages should follow a **clear and consistent structure** for better re
    If you’ve made multiple small commits for the same feature or fix, consider squashing them into one meaningful commit before merging.
    Example:
 
-git rebase -i HEAD~5   `<span>`# Squash last 5 commits into one 
+git rebase -i HEAD~5   `<span>`# Squash last 5 commits into one
 
 ---
 
