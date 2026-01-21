@@ -1,154 +1,162 @@
+# Software Requirements Specification (SRS)
 
-### **Software Requirements Specification (SRS)**
-
-#### **1. Introduction**
-
-WaveWatch is a mobile application designed to monitor and analyze mobile network traffic in real-time, focusing on network performance, security, and data usage management. The app provides users with real-time alerts, metadata analysis, and smart actions to control suspicious activities on their mobile networks.
-
-#### **2. Functional Requirements**
-
-**2.1 User Interface (UI):**
-
-* Clean and user-friendly design.
-* Dashboard displaying real-time traffic data, alerts, and notifications.
-* Chat-based assistant for troubleshooting and support.
-
-**2.2 Network Traffic Monitoring:**
-
-* Real-time tracking of mobile network data usage (e.g., 4G, 5G, Wi-Fi).
-* Display of data consumption by app and network type.
-* Breakdown of data usage for each application and network.
-
-**2.3 Packet Metadata Analysis:**
-
-* View detailed metadata for network packets (source, destination, type, size).
-* Analyzing network traffic for unusual patterns or security threats.
-
-**2.4 Alerts and Notifications:**
-
-* Real-time alerts for exceeding data usage limits.
-* Alerts for suspicious or potentially malicious network activity.
-* Customizable alert settings based on user preferences.
+**Product:** WaveWatch  
+**Version:** 2.0  
+**Platform:** Android 8.0+ (API 26+)
 
 ---
 
-### **🔔 Smart Alerts – System Features (SRS)**
+## 1. Introduction
 
-**3.x Smart Alerts & Kill Switch Control**
-The system shall provide real-time alerts based on a variety of monitored signals and detected anomalies. These alerts will enable users to monitor activity and take immediate control actions through an in-app Kill Switch mechanism.
+### 1.1 Purpose
 
-**✅ Alert Conditions include:**
+WaveWatch is a mobile security app that helps Android users:
 
-* Abnormal or high-volume data usage.
-* Suspicious or unknown app-level traffic.
-* Active screen sharing sessions consuming significant bandwidth.
-* Mobile hotspot (tethering) activation, including connected devices.
-* Bluetooth discovery events or unexpected scanning.
-* Background usage of sensitive permissions or services.
+- Understand their device's security status
+- Protect against threats
+- Learn about mobile security
 
-**✅ Alert Capabilities:**
+### 1.2 Tagline
 
-* Notify users with contextual information (e.g., app name, traffic stats, device count).
-* Provide actionable suggestions via the chat-based assistant.
-* Enable Kill Switch actions, allowing users to:
-  * Instantly terminate screen sharing.
-  * Disable mobile hotspot.
-  * Disconnect unknown devices from hotspot.
-* Offer post-action confirmation, impact explanation, and preventive guidance.
-
-**2.5 Usage Restriction Tools:**
-
-* Set limits on data usage for mobile networks and Wi-Fi.
-* Restrict background data usage for specific apps when usage limits are reached.
-
-**2.6 Security Insights:**
-
-* Real-time analysis of network traffic to identify security risks.
-* Alerts for unusual network behavior or suspicious apps consuming excessive data.
-
-**2.7 Suspicious Activity Knowledge:**
-
-*Before Killing Suspicious Activity:*
-
-* The app will notify the user when suspicious activity is detected, providing detailed information such as:
-  * **Type of Activity** : Unusual outbound traffic, unauthorized app behavior, excessive data consumption, etc.
-  * **Suspicious App/Process** : The app or process causing the suspicious activity.
-  * **Reason for Alert** : Explanation of why the activity is considered suspicious, based on traffic patterns or known security risks.
-  * **Potential Risks** : Risks of leaving the suspicious activity unchecked, such as data leakage, malware, or unauthorized access.
-
-**Example Alert:**
-
-“Suspicious app detected: App X has been consuming excessive data. It may be trying to upload personal data without your permission.”
-
-*After Killing Suspicious Activity:*
-
-* After the user terminates the suspicious activity, the app will:
-  * Provide a confirmation message:
-
-    “Suspicious app X has been terminated to prevent unauthorized data usage.”
-  * Display a post-action explanation:
-
-    “App X was using unusual network traffic and could compromise your privacy.”
-  * Provide future recommendations:
-
-    “Consider reviewing app permissions or running a security scan to ensure your device is secure.”
-  * Inform the user of the impact on device functionality (if applicable):
-
-    “This action may impact the app’s ability to sync data until reconfigured.”
+> **"Analyze. Protect. Learn."**
 
 ---
 
-#### **3. Non-Functional Requirements**
+## 2. Functional Requirements
 
-* **Performance** : The app should run efficiently with minimal impact on device battery life and CPU usage.
-* **Security** : The app must prioritize user privacy, ensuring that suspicious activities are handled securely.
-* **Usability** : The information provided before and after taking action should be clear, concise, and user-friendly.
-* **Scalability** : The system should handle a growing number of users without performance degradation.
-* **Cross-Platform Compatibility** : The app should be compatible with both Android and iOS platforms.
-* **Offline Support** : The app should provide limited functionality when no network connection is available.
+### 2.1 Dashboard (FR-001)
+
+| ID       | Requirement                                |
+| -------- | ------------------------------------------ |
+| FR-001.1 | Display security score (0-100)             |
+| FR-001.2 | Show "Scan Now" button                     |
+| FR-001.3 | Display active alerts count                |
+| FR-001.4 | Show quick stats (data usage, active apps) |
+
+### 2.2 Security Scan (FR-002)
+
+| ID       | Requirement                                   |
+| -------- | --------------------------------------------- |
+| FR-002.1 | Scan installed apps for dangerous permissions |
+| FR-002.2 | Check WiFi network security                   |
+| FR-002.3 | Scan for nearby Bluetooth devices             |
+| FR-002.4 | Calculate overall security score              |
+| FR-002.5 | Display results in simple language            |
+
+### 2.3 Alerts (FR-003)
+
+| ID       | Requirement                                |
+| -------- | ------------------------------------------ |
+| FR-003.1 | Send notification for security threats     |
+| FR-003.2 | Show explanation for each alert            |
+| FR-003.3 | Provide action button (Block/Allow/Ignore) |
+| FR-003.4 | Store alert history                        |
+
+### 2.4 App Management (FR-004)
+
+| ID       | Requirement                              |
+| -------- | ---------------------------------------- |
+| FR-004.1 | List all apps with permission summary    |
+| FR-004.2 | Show data usage per app                  |
+| FR-004.3 | Link to Android settings to restrict app |
+| FR-004.4 | Flag apps with risky permissions         |
+
+### 2.5 Bluetooth Management (FR-005)
+
+| ID       | Requirement                        |
+| -------- | ---------------------------------- |
+| FR-005.1 | Scan for nearby Bluetooth devices  |
+| FR-005.2 | Show trusted vs unknown devices    |
+| FR-005.3 | Allow adding devices to blacklist  |
+| FR-005.4 | Alert when unknown device detected |
+
+### 2.6 Kill Switch (FR-006)
+
+| ID       | Requirement                                   |
+| -------- | --------------------------------------------- |
+| FR-006.1 | One-tap button to disable suspicious activity |
+| FR-006.2 | Visual confirmation of action                 |
+| FR-006.3 | Log what was blocked                          |
+
+### 2.7 Learn Section (FR-007)
+
+| ID       | Requirement               |
+| -------- | ------------------------- |
+| FR-007.1 | Display security tips     |
+| FR-007.2 | Show educational articles |
+| FR-007.3 | Weekly security report    |
 
 ---
 
-#### **4. Security Requirements**
+## 3. Non-Functional Requirements
 
-* The app will ensure secure communication between the mobile device and backend server for processing network data.
-* Only authorized actions will be taken (e.g., killing an app or blocking network traffic) with user consent.
-* All data related to suspicious activity detection will be handled securely, following privacy regulations.
+### 3.1 Performance
 
----
+| ID      | Requirement                |
+| ------- | -------------------------- |
+| NFR-001 | App launch < 2 seconds     |
+| NFR-002 | Security scan < 10 seconds |
+| NFR-003 | Battery usage < 2% per day |
 
-#### **5. User Stories**
+### 3.2 Usability
 
-* **As an end user** , I want to monitor my data usage in real-time so that I can avoid exceeding my data limit.
-* **As a mobile network user** , I want to receive alerts when suspicious network activity is detected so that I can protect my privacy.
-* **As an app user** , I want to be able to restrict mobile data usage and set limits for specific apps to avoid high data consumption.
-* **As a security-conscious individual** , I want to understand why an activity is suspicious before I take action so that I can make informed decisions.
-* **As a user** , I want the app to provide feedback and recommendations after terminating suspicious activities so that I can ensure my device’s security.
+| ID      | Requirement                              |
+| ------- | ---------------------------------------- |
+| NFR-004 | All text readable by non-technical users |
+| NFR-005 | No technical jargon in UI                |
+| NFR-006 | Support dark mode                        |
 
----
+### 3.3 Security
 
-#### **6. Assumptions**
+| ID      | Requirement                       |
+| ------- | --------------------------------- |
+| NFR-007 | No data sent to external servers  |
+| NFR-008 | All data stored locally on device |
+| NFR-009 | No root access required           |
 
-* Users will have access to the app on modern smartphones running Android or iOS.
-* The app will be updated regularly to maintain compatibility with new OS versions and introduce new features.
-* The backend infrastructure will be secure and scalable, ensuring smooth operation even as the user base grows.
+### 3.4 Compatibility
 
----
-
-#### **7. Dependencies**
-
-* **Mobile Network Data Access** : The app requires access to mobile network data usage statistics, which may vary depending on the device manufacturer and OS version.
-* **Backend Infrastructure** : Cloud hosting and data processing services will be set up to support real-time traffic monitoring and analysis.
-* **Security Standards** : The app will comply with data privacy laws and security regulations to protect user data.
-
----
-
-#### **8. Risks**
-
-* **Device Compatibility** : Different devices may present compatibility challenges due to variations in mobile network stack implementations.
-* **Privacy Concerns** : Handling sensitive user data will require strong security measures to prevent breaches.
-* **Performance** : Real-time data analysis may impact performance, particularly on low-end smartphones.
+| ID      | Requirement                            |
+| ------- | -------------------------------------- |
+| NFR-010 | Support Android 8.0 (API 26) and above |
+| NFR-011 | Support both phones and tablets        |
 
 ---
 
-This **SRS** should be more structured, with clear bullet points and headings to make each section easier to navigate.
+## 4. System Architecture
+
+```
+┌─────────────────────────────────────────┐
+│           Presentation Layer            │
+│         (Jetpack Compose UI)            │
+├─────────────────────────────────────────┤
+│            Domain Layer                 │
+│    (Use Cases, Business Logic)          │
+├─────────────────────────────────────────┤
+│             Data Layer                  │
+│  (Repositories, Local Database)         │
+├─────────────────────────────────────────┤
+│          Android System APIs            │
+│  NetworkStats | UsageStats | Bluetooth  │
+└─────────────────────────────────────────┘
+```
+
+---
+
+## 5. Data Storage
+
+| Data          | Storage           |
+| ------------- | ----------------- |
+| Settings      | SharedPreferences |
+| Alert history | Room Database     |
+| Scan results  | Room Database     |
+| BT blacklist  | Room Database     |
+
+---
+
+## 6. Constraints
+
+- No root access — must use standard Android APIs only
+- `NetworkStatsManager` updates every ~2 hours (Android limitation)
+- Cannot force-stop other apps without root
+- Background scanning limited by Android battery optimization

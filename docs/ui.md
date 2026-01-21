@@ -1,77 +1,176 @@
-## 📱 **UI Screens & Essential Modules**
+# UI Specification
 
-### 1. **🔓 Onboarding & Permissions**
-
-* Welcome screen
-* Permissions (network, Bluetooth, usage access, battery optimization)
-* Quick tutorial / intro
-
-### 2. **🏠 Home / Dashboard**
-
-* Real-time upload/download speed graph
-* Active connections (App + IP + Interface)
-* Summary widget: alerts, usage, battery
-
-### 3. **📊 Usage Dashboard**
-
-* Hourly, daily, weekly data usage graphs
-* App-wise network + battery usage
-* Bluetooth usage stats: scan frequency, devices, durations
-
-### 4. **🚨 Smart Alerts Feed**
-
-* List of triggered alerts
-* Tap to view:
-  * Metadata (app, IP, type)
-  * “Take Action” button (Kill switch, restrict, allow)
-  * “Why this alert?” explanation
-
-### 5. **🛡️ Security & Privacy Insights**
-
-* App-wise scores (privacy leaks)
-* Unencrypted traffic tracker
-* Analytics SDKs and trackers
-
-### 6. **🚫 Kill Switch Center**
-
-* Log of terminated activities
-* Re-enable option (if safe)
-* Post-action summary: reason, app, what was terminated
-
-### 7. **💬 Chat-Based Assistant**
-
-* Natural language input box
-* Chat response stream
-* Tap to auto-take action or open detailed view
-
-### 8. **⚙️ Settings**
-
-* General (theme, notification settings)
-* Auto restriction rules
-* Advanced: toggle developer mode, logs, feedback
+**Product:** WaveWatch  
+**Platform:** Android  
+**Framework:** Jetpack Compose
 
 ---
 
-## 🧱 **UI Flow Diagram (Simplified)**
+## Navigation Structure
 
 ```
-[Onboarding]
-     ↓
-[Home Dashboard]
-  ↙   ↓   ↘   ↘
-[Alerts][Usage][Privacy][Chat Assistant]
-         ↓        ↓            ↓
-     [App Detail] [Kill Switch] [Query Result]
+Bottom Navigation:
+├── Home (Dashboard)
+├── Alerts
+├── Apps
+└── Settings
 ```
 
 ---
 
-## 🧩 **Common Components**
+## Screens
 
-These components should be shared across screens for UX consistency:
+### 1. Dashboard (Home)
 
-* **App card** : with name, icon, network/battery stats
-* **Alert card** : triggered alert summary + quick action
-* **Mini usage chart** : line or bar
-* **Assistant bubble** : Chat icon persistent on major screens
-* **Snackbar/Toast** : for quick success/failure action updates
+```
+┌─────────────────────────────┐
+│  🌊 WaveWatch               │
+│  Your device is secure ✓    │
+├─────────────────────────────┤
+│  ┌─────────┐ ┌─────────┐   │
+│  │   78    │ │   12    │   │
+│  │ Score   │ │  Apps   │   │
+│  └─────────┘ └─────────┘   │
+├─────────────────────────────┤
+│  [    🔍 SCAN NOW     ]     │
+├─────────────────────────────┤
+│  ⚠️ 2 Alerts                │
+│  TikTok: High background... │
+│  Unknown BT device nearby   │
+└─────────────────────────────┘
+```
+
+### 2. Scan Results
+
+```
+┌─────────────────────────────┐
+│  ← Security Scan            │
+├─────────────────────────────┤
+│  Score: 78/100  🟡          │
+├─────────────────────────────┤
+│  ✅ Apps: 8 safe, 2 risky   │
+│  ✅ Network: Secure (WPA2)  │
+│  ⚠️ Bluetooth: 1 unknown    │
+├─────────────────────────────┤
+│  Recommendations:           │
+│  • Review TikTok permissions│
+│  • Block unknown BT device  │
+└─────────────────────────────┘
+```
+
+### 3. Alerts
+
+```
+┌─────────────────────────────┐
+│  🔔 Alerts                  │
+├─────────────────────────────┤
+│  ┌─────────────────────┐   │
+│  │ ⚠️ High background  │   │
+│  │ TikTok used 500MB   │   │
+│  │ while you slept     │   │
+│  │                     │   │
+│  │ [Restrict] [Ignore] │   │
+│  └─────────────────────┘   │
+│                             │
+│  ┌─────────────────────┐   │
+│  │ 📶 Unknown device   │   │
+│  │ BT_Speaker nearby   │   │
+│  │                     │   │
+│  │ [Block] [Trust]     │   │
+│  └─────────────────────┘   │
+└─────────────────────────────┘
+```
+
+### 4. Apps List
+
+```
+┌─────────────────────────────┐
+│  📱 Apps                    │
+├─────────────────────────────┤
+│  🎵 TikTok         🔴 Risky │
+│     Camera, Mic, Location   │
+│     1.8 GB today            │
+├─────────────────────────────┤
+│  💬 WhatsApp       🟢 Safe  │
+│     Contacts, Storage       │
+│     340 MB today            │
+├─────────────────────────────┤
+│  📺 YouTube        🟢 Safe  │
+│     Storage                 │
+│     1.2 GB today            │
+└─────────────────────────────┘
+```
+
+### 5. Settings
+
+```
+┌─────────────────────────────┐
+│  ⚙️ Settings                │
+├─────────────────────────────┤
+│  🔔 Smart Alerts      [ON]  │
+│  📶 BT Scanner        [ON]  │
+│  🌙 Dark Mode         [ON]  │
+│  🔋 Battery Saver     [OFF] │
+├─────────────────────────────┤
+│  📊 Data Budget  →          │
+│  📚 Learn        →          │
+│  ℹ️ About        →          │
+└─────────────────────────────┘
+```
+
+---
+
+## Design Tokens
+
+### Colors
+
+| Token      | Light   | Dark    |
+| ---------- | ------- | ------- |
+| Primary    | #6366F1 | #818CF8 |
+| Background | #FFFFFF | #0A0A0F |
+| Surface    | #F1F5F9 | #1A1A24 |
+| Success    | #10B981 | #34D399 |
+| Warning    | #F59E0B | #FBBF24 |
+| Danger     | #EF4444 | #F87171 |
+| Text       | #0F172A | #F8FAFC |
+| Muted      | #64748B | #94A3B8 |
+
+### Typography
+
+| Style   | Size | Weight   |
+| ------- | ---- | -------- |
+| Title   | 24sp | Bold     |
+| Heading | 18sp | SemiBold |
+| Body    | 14sp | Regular  |
+| Caption | 12sp | Regular  |
+| Small   | 10sp | Regular  |
+
+### Spacing
+
+| Token | Value |
+| ----- | ----- |
+| xs    | 4dp   |
+| sm    | 8dp   |
+| md    | 16dp  |
+| lg    | 24dp  |
+| xl    | 32dp  |
+
+### Corner Radius
+
+| Token | Value |
+| ----- | ----- |
+| sm    | 8dp   |
+| md    | 12dp  |
+| lg    | 16dp  |
+| full  | 999dp |
+
+---
+
+## Components
+
+- `SecurityScoreCard` — Circular score indicator
+- `AlertCard` — Alert with actions
+- `AppListItem` — App with permission badges
+- `DeviceItem` — Bluetooth device row
+- `ToggleSetting` — Settings toggle
+- `ScanButton` — Primary CTA button

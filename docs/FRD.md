@@ -1,165 +1,179 @@
+# Feature Requirements Document (FRD)
 
-# 📘 **WaveWatch – Feature Requirements Document (FRD)**
-
----
-
-## 🧠 **Vision**
-
-WaveWatch is a **privacy-first, no-root mobile network monitoring app** that helps users:
-
-* Track real-time network usage
-* Identify security risks
-* Control background activity
-* Understand device behavior across network types
-* **Terminate suspicious or malware activities using a Kill Switch** for enhanced security.
+**Product:** WaveWatch  
+**Version:** 2.0  
+**Platform:** Android
 
 ---
 
-## 🎯 **Core Features**
+## Tagline
 
-### 1. 📡 **Real-Time Network Monitoring**
-
-* Track upload/download speed per app
-* Monitor active network interface (Wi-Fi, Mobile, VPN)
-* Visualize protocol usage (TCP, UDP, TLS, QUIC)
-
-### 2. 📦 **Packet Metadata Analysis**
-
-* Detect source/destination IPs & ports
-* Identify DNS queries and their resolution time
-* Monitor TLS handshakes and connection stability
-* Estimate latency and packet loss passively
-
-### 3. 🚨 **Smart Alerts**
-
-WaveWatch shall provide real-time, context-aware alerts based on signal analysis. These alerts will help users identify risks and take action without needing technical expertise.
-
-#### ✅ **Alert Conditions:**
-
-* Sudden traffic spikes
-* Suspicious foreign IPs
-* Abnormal background usage
-* Unknown Bluetooth device connections
-* Silent BLE scans by inactive apps
-* **Active screen sharing sessions**
-* **Hotspot (tethering) usage with connected device count**
-
-#### ✅ **Alert Capabilities:**
-
-* In-app notifications with relevant metadata (app, IP, device, volume)
-* Guidance via the chat-based assistant
-* **Kill Switch Controls:**
-  * Instantly **terminate screen sharing**
-  * **Disable mobile hotspot**
-  * **Disconnect unknown tethered devices**
-  * **Terminate suspicious software or malware** based on behavior analysis
-* **Post-action feedback** including:
-  * Why the action was triggered
-  * What was stopped (e.g., suspicious app or activity)
-  * Risk explanation and future prevention tips
-
-### 4. 🔐 **Security & Privacy Insights**
-
-* Flag unencrypted HTTP/DNS traffic
-* Detect tracker domains and analytics SDKs
-* Monitor BLE usage for tracking behavior
-* Display score for each app based on privacy leaks
-* **Identify and flag suspicious apps or processes that may be malware.**
-
-### 5. 📊 **Usage Dashboard**
-
-* Visualize data consumption hourly, daily, weekly
-* App-wise usage breakdown
-* Bluetooth usage summary: duration, devices, scan frequency
-* Forecasting based on historical trends
-
-### 6. 💬 **Chat-based Assistant**
-
-* Natural language queries like:
-  * “Which app used the most data last night?”
-  * “Any unknown Bluetooth devices nearby?”
-  * “Show connections made over insecure protocols.”
-  * “Which app is consuming the most battery and data?”
-  * “What suspicious apps are running in the background?”
-
-### 7. 🚫 **Usage Restriction Tools**
-
-* Automatically block:
-  * Background data for suspicious apps
-  * Bluetooth at night or on low battery
-* Optional App Lock during peak usage
-* **Terminating suspicious software** via the **Kill Switch** based on user settings
-
-### 8. 🛠️ **Developer Tools (Optional in Future)**
-
-* App inspection mode for devs
-* Visual packet pattern replay for testing connections
+> **"Analyze. Protect. Learn."**
+>
+> Security analysis and threat management for Android — made simple.
 
 ---
 
-## 🧩 **Signal Categories**
+## Feature Overview
 
-### A. 📶 **Mobile/Wi-Fi Network Signals**
-
-| Type            | Examples                                  |
-| --------------- | ----------------------------------------- |
-| Traffic Stats   | Data usage, protocol, per-app metrics     |
-| Connection Info | RTT, latency, port scans, IP profiles     |
-| DNS/TLS Events  | DNS resolution time, TLS handshake errors |
-
-### B. 🔵 **Bluetooth Signals** (NEW)
-
-| Type               | Examples                                              |
-| ------------------ | ----------------------------------------------------- |
-| Device Events      | Connected/disconnected, MAC, name, signal strength    |
-| Scanning Behavior  | BLE scan frequency, unknown nearby devices            |
-| App-Level Activity | App initiating scan or connection                     |
-| Usage Metrics      | Total BT usage time, data exchanged, background scans |
-
-### C. 📲 **System & User Behavior Signals**
-
-* Foreground app mapping to network activity
-* Battery drain vs. data usage
-* Device state: screen off, charging, etc.
+```
+┌─────────────────────────────────────────────────┐
+│                  WaveWatch                      │
+├─────────────────────────────────────────────────┤
+│  ANALYZE        │  PROTECT       │  LEARN       │
+│  ───────        │  ───────       │  ─────       │
+│  Security Scan  │  Kill Switch   │  Tips        │
+│  App Audit      │  Block Apps    │  Explanations│
+│  Network Check  │  BT Blacklist  │  Reports     │
+│  BT Scanner     │  Alerts        │  Articles    │
+└─────────────────────────────────────────────────┘
+```
 
 ---
 
-## ⚙️ **Architecture Highlights**
+## 1. Security Analysis (ANALYZE)
 
-### 🔧 **C++ Backend**
+### 1.1 Security Score
 
-* High-performance packet analysis engine
-* DNS/TLS parsing and protocol inspection
-* Memory-safe, multi-threaded signal pipeline
+- Overall score from 0-100
+- Breakdown by category (Apps, Network, Bluetooth)
+- Color coded: 🟢 Green (80+) | 🟡 Yellow (50-79) | 🔴 Red (<50)
 
-### 📱 **Kotlin KMP Frontend**
+### 1.2 App Permission Audit
 
-* Shared logic across Android/iOS
-* Modern Compose UI for intuitive dashboards
-* Flow-based signal stream using coroutines
+| Check                 | Description                            |
+| --------------------- | -------------------------------------- |
+| Dangerous permissions | Camera, Microphone, Location, Contacts |
+| Background access     | Apps running when phone is idle        |
+| Data usage            | Which apps consume most data           |
+| Battery drain         | Apps draining battery in background    |
 
-### 📦 **Signal Collector Modules (Examples)**
+### 1.3 Network Security Check
 
-* `NetworkSignalManager`
-* `BluetoothSignalManager`
-* `AppUsageSignalManager`
-* `DNSResolverSignalEngine`
+| Check                | Description                            |
+| -------------------- | -------------------------------------- |
+| WiFi encryption      | Is current WiFi using WPA2/WPA3?       |
+| Open network warning | Alert when connecting to public WiFi   |
+| Active connections   | Which apps are currently using network |
 
----
+### 1.4 Bluetooth Scanner
 
-## 📂 **Bluetooth Signal Collector Design**
-
-### Components
-
-| File/Class                     | Role                                                                   |
-| ------------------------------ | ---------------------------------------------------------------------- |
-| `BluetoothSignalManager`     | Core event handler and scanner                                         |
-| `BluetoothAlertEngine`       | Analyzes for background scans, device anomalies                        |
-| `BluetoothDeviceProfile`     | Stores known device behavior patterns                                  |
-| `BluetoothUsageStats`        | Logs duration, scan count, app interaction                             |
-| `BluetoothRestrictionEngine` | Implements FRD’s restriction rules                                    |
-| `BluetoothMalwareScanEngine` | Identifies suspicious Bluetooth activity for kill switch functionality |
+| Check              | Description                         |
+| ------------------ | ----------------------------------- |
+| Nearby devices     | List all Bluetooth devices in range |
+| Unknown detection  | Flag devices not in trusted list    |
+| Connection history | Log of all BT connections           |
 
 ---
 
-This updated FRD now includes the **Kill Switch** feature to allow users to terminate suspicious software and malware activities, along with providing detailed alerts, feedback, and control over malicious behavior.
+## 2. Threat Management (PROTECT)
+
+### 2.1 Kill Switch
+
+- One-tap emergency button
+- Disconnects all suspicious connections
+- Disables background data for flagged apps
+- Visual confirmation of action taken
+
+### 2.2 App Restrictions
+
+| Action                   | How                                    |
+| ------------------------ | -------------------------------------- |
+| Block background data    | Links to Android settings              |
+| Restrict permissions     | Links to app permission settings       |
+| Uninstall recommendation | "This app is risky, consider removing" |
+
+### 2.3 Bluetooth Blacklist
+
+- Add devices to "blocked" list
+- Auto-reject pairing requests from blocked devices
+- Trusted devices list
+
+### 2.4 Smart Alerts
+
+| Alert Type            | Example                                   |
+| --------------------- | ----------------------------------------- |
+| High background usage | "TikTok used 500MB while you slept"       |
+| Unknown BT device     | "New device nearby: BT_Speaker"           |
+| Insecure network      | "You're on an open WiFi network"          |
+| Risky app             | "App X has access to camera + microphone" |
+
+---
+
+## 3. Security Education (LEARN)
+
+### 3.1 Plain English Explanations
+
+Every alert includes:
+
+- **What happened** (1 sentence)
+- **Why it matters** (1 sentence)
+- **What you can do** (action button)
+
+Example:
+
+```
+⚠️ TikTok used 500MB in the background last night
+
+WHY: Apps shouldn't use this much data when you're not using them.
+     This could drain your data plan and battery.
+
+ACTION: [Restrict Background Data]
+```
+
+### 3.2 Weekly Security Report
+
+Every Sunday, show:
+
+- Security score trend (up/down)
+- Top 3 data-consuming apps
+- Any new threats detected
+- Tips for the week
+
+### 3.3 Learn Section
+
+Short articles (2-minute reads):
+
+- "What are app permissions?"
+- "How to stay safe on public WiFi"
+- "Why Bluetooth can be dangerous"
+- "Signs your phone might be compromised"
+
+---
+
+## 4. UI Screens
+
+| Screen       | Purpose                            |
+| ------------ | ---------------------------------- |
+| Dashboard    | Security score, quick scan, alerts |
+| Scan Results | Detailed analysis results          |
+| Alerts       | List of notifications with actions |
+| Apps         | Per-app security status            |
+| Bluetooth    | Device list and blacklist          |
+| Settings     | Preferences and toggles            |
+| Learn        | Educational content                |
+
+---
+
+## 5. Android APIs Used
+
+| Feature       | API                                      |
+| ------------- | ---------------------------------------- |
+| Data usage    | `NetworkStatsManager`                    |
+| App list      | `PackageManager`                         |
+| Permissions   | `PackageManager.getPermissionsInfo()`    |
+| Bluetooth     | `BluetoothAdapter`, `BluetoothLeScanner` |
+| WiFi info     | `WifiManager`, `ConnectivityManager`     |
+| Battery stats | `UsageStatsManager`                      |
+| Notifications | `NotificationManager`                    |
+
+---
+
+## 6. Permissions Required
+
+| Permission             | Why                       |
+| ---------------------- | ------------------------- |
+| `PACKAGE_USAGE_STATS`  | To see app usage data     |
+| `ACCESS_NETWORK_STATE` | To check network security |
+| `BLUETOOTH_SCAN`       | To detect nearby devices  |
+| `POST_NOTIFICATIONS`   | To send alerts            |

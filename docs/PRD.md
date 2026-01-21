@@ -1,146 +1,128 @@
-**Product Requirements Document (PRD)**
+# Product Requirements Document (PRD)
 
-**Product Name:** WaveWatch
-**Author:** Mukesh
-**Date:** April 23, 2025
-**Version:** 1.0
+**Product:** WaveWatch  
+**Version:** 2.0  
+**Author:** Mukesh  
+**Date:** January 2026
 
 ---
 
-### 1. Overview
+## 1. Vision
 
-WaveWatch is a privacy-focused mobile application designed to monitor, analyze, and manage mobile network traffic and Bluetooth activity in real-time. It empowers users with visibility, control, and smart alerts without requiring root access or advanced technical knowledge.
+> **"Analyze. Protect. Learn."**
 
-### 2. Goals & Objectives
+WaveWatch makes mobile security accessible to everyone. It analyzes threats, protects users, and educates them — all in simple language.
 
-* Provide a user-friendly tool to monitor mobile network and Bluetooth signals.
-* Alert users to suspicious or unusual activities.
-* Offer actionable suggestions through a built-in assistant.
-* Help users make informed decisions about app usage and connectivity.
+---
 
-### 3. Problem Statement
+## 2. Problem Statement
 
-Most users lack visibility into their device's background network and Bluetooth activity. Existing tools are too complex, require root access, or offer limited insights. This gap can lead to privacy breaches, battery drain, or security risks.
+Most Android users are unaware of:
 
-### 4. Target Users
+- Apps with dangerous permissions accessing their data
+- Insecure network connections
+- Background processes consuming data and battery
+- Nearby Bluetooth threats
 
-* Privacy-conscious users
-* Parents managing children's device usage
-* Tech-savvy users and researchers
-* General users who want greater control over their device
+Existing solutions are either too technical or require root access.
 
-### 5. User Impact
+---
 
-Without a tool like WaveWatch, users:
+## 3. Solution
 
-* Remain unaware of potential threats and suspicious behaviors.
-* Cannot easily monitor app-level network or Bluetooth usage.
-* Miss out on optimizing battery and data usage.
-* Have no simple way to take real-time action (e.g., terminate a connection).
+A no-root Android app that:
 
-### 6. Existing Solutions & WaveWatch Advantage
+1. **Analyzes** — Scans device for security risks
+2. **Protects** — Blocks threats and suspicious activity
+3. **Teaches** — Explains everything in plain English
 
-**Existing Tools:** NetGuard, Wireshark (desktop), GlassWire.
-**Limitations:**
+---
 
-* Require root access
-* Poor UX for non-technical users
-* Do not monitor Bluetooth activity
+## 4. Target Users
 
-**WaveWatch Improvements:**
+| User Type      | Need                               |
+| -------------- | ---------------------------------- |
+| Non-tech users | Simple security without jargon     |
+| Parents        | Protect family devices             |
+| Students       | Learn about cybersecurity          |
+| Professionals  | Secure work data on personal phone |
 
-* No root required
-* Clean, intuitive UI
-* Bluetooth and network traffic analysis
-* Smart alerts, assistant guidance, and a Kill Switch
-* Privacy-first, minimal permissions
+---
 
-### 7. Product Vision Questions Answered
+## 5. Core Features (MVP)
 
-**What’s the main goal of the app?**
-To give users control and visibility over their device's network and Bluetooth activity in a secure, user-friendly way.
+### 5.1 Dashboard
 
-**What problem does the app solve?**
-It addresses the lack of transparent, real-time traffic monitoring and alerting tools for mobile users.
+- Security Score (0-100)
+- Quick scan button
+- Today's data usage summary
+- Active threats count
 
-**Who faces this problem, and how does it impact their daily lives?**
-Everyday mobile users who unknowingly face privacy risks, performance issues, or potential malicious behaviors.
+### 5.2 Security Analysis
 
-**Are there any existing solutions to this problem, and how can your app improve on them?**
-Yes — WaveWatch improves by being root-free, offering Bluetooth insights, assistant support, and better usability.
+- App permission audit
+- Network security check
+- Bluetooth device scan
+- Background activity monitor
 
-**How will this app make users’ lives easier, more efficient, or more enjoyable?**
-Through proactive alerts, insightful dashboards, and intuitive UX — empowering them to manage their devices smarter and safer.
+### 5.3 Threat Management
 
-**How does this app align with the company’s larger mission and values?**
-WaveWatch supports the mission of democratizing digital privacy, providing accessible, transparent, and responsible technology for everyone.
+- Block suspicious apps from background data
+- Bluetooth device blacklist
+- Kill Switch (emergency stop)
+- Smart recommendations
 
-### 8. Key Features & Functional Requirements
+### 5.4 Alerts
 
-* **Real-time Network Monitor**
-* **Bluetooth Activity Tracker**
-* **Smart Alerts & Recommendations**
-* **Kill Switch to terminate suspicious connections**
-* **Chat-based Assistant for help and advice**
-* **Usage Dashboards**
-* **Privacy-first, no-root architecture**
+- Real-time notifications for threats
+- "What does this mean?" explanations
+- One-tap actions (Block/Allow/Ignore)
 
-### 9. Non-Functional Requirements
+### 5.5 Learn Section
 
-* Fast and responsive UI (Kotlin KMP)
-* Secure data processing (C++ backend)
-* Lightweight performance and battery-efficient
-* Offline access to recent activity logs
+- Weekly security tips
+- Simple explanations of threats
+- Best practices for mobile security
 
-### 10. User Interface Flow
+---
 
-* **Home Dashboard:** Shows live data and alerts
-* **Alerts View:** Displays smart insights with actions
-* **Assistant Chat:** Interactive help and feedback
-* **Settings:** Permission controls, preferences, advanced tools
+## 6. Out of Scope (v1.0)
 
-### 11. Technical Stack
+- iOS support
+- VPN-based packet inspection
+- Cloud sync
+- Chat assistant
 
-* Frontend: Kotlin (KMP for Android & iOS)
-* Backend: C++
-* Data Storage: Local encrypted DB
-* Signal Collectors: System APIs, Accessibility Services
+---
 
-### 12. Timeline & Milestones
+## 7. Success Metrics
 
-* April–May: UI/UX Development
-* June–July: Signal Modules + Alerts Engine
-* August: Assistant Integration + Testing
-* September: MVP Launch
-* October–February: Feedback, Iteration, Beta Launch
+| Metric                  | Target          |
+| ----------------------- | --------------- |
+| Downloads (3 months)    | 10,000          |
+| Daily Active Users      | 30% of installs |
+| App Store Rating        | 4.0+            |
+| User understands alerts | 80% (survey)    |
 
-### 13. Dependencies & Risks
+---
 
-* System permission limits (especially Bluetooth on iOS)
-* OS version fragmentation
-* Firebase services for push notifications (optional)
+## 8. Timeline
 
-### 14. Success Metrics
+| Phase            | Duration | Deliverable   |
+| ---------------- | -------- | ------------- |
+| Design           | 2 weeks  | Figma mockups |
+| Core Development | 6 weeks  | MVP features  |
+| Testing          | 2 weeks  | Beta release  |
+| Launch           | 1 week   | Play Store    |
 
-* # of downloads and active users
-* Alert accuracy and false positives rate
-* User feedback and satisfaction (App Store ratings)
-* Assistant usage and engagement
+**Target Launch:** March 2026
 
-### 15. Future Scope
+---
 
-* Add WiFi signal monitoring
-* Expand Assistant to support voice
-* Introduce parental control and enterprise modes
-* Cloud sync and remote monitoring features
-* Push notifications
-* Location and GPS services
-* Payment capabilities
-* Search functionalities
-* Social media integrations
-* Order tracking
-* In-app support
-* Language options
-* Ratings and reviews
-* Gamification elements
-* Personalization based on user behavior
+## 9. Risks
+
+| Risk                    | Mitigation                                   |
+| ----------------------- | -------------------------------------------- |
+| Android API limitations | Use allowed APIs only (no root)              |
+| Battery drain           | Optimize background scanning                 |
+| User confusion          | Focus on simple UX, test with non-tech users |
