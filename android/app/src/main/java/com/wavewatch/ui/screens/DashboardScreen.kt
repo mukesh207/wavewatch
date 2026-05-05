@@ -1,6 +1,7 @@
 package com.wavewatch.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -46,13 +47,50 @@ fun DashboardScreen(
             item { PermissionBanner("Usage Stats permission required for app monitoring") }
         }
         
-        item { TopAppsSection(uiState.topApps) }
+        item { TopAppsSection(uiState.topApps, onAppClick = viewModel::analyzeApp) }
         item { BluetoothSection(uiState.nearbyDevices, viewModel::trustDevice, viewModel::blockDevice) }
         
         uiState.errorMessage?.let { error ->
             item { ErrorBanner(error) }
         }
     }
+
+    if (uiState.analyzingApp != null && uiState.aiAnalysisText != null) {
+        AIAnalysisDialog(
+            app = uiState.analyzingApp!!,
+            analysisText = uiState.aiAnalysisText!!,
+            onDismiss = viewModel::dismissAnalysis
+        )
+    }
+}
+
+@Composable
+private fun AIAnalysisDialog(app: AppUsageInfo, analysisText: String, onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text("🤖", fontSize = 24.sp)
+                Spacer(Modifier.width(8.dp))
+                Text("AI Analysis: ${app.appName}")
+            }
+        },
+        text = {
+            Column {
+                Text(
+                    text = analysisText,
+                    style = MaterialTheme.typography.bodyMedium,
+                    lineHeight = 22.sp
+                )
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Close")
+            }
+        },
+        containerColor = MaterialTheme.colorScheme.surfaceVariant
+    )
 }
 
 @Composable
@@ -179,7 +217,7 @@ private fun ErrorBanner(message: String) {
 }
 
 @Composable
-private fun TopAppsSection(apps: List<AppUsageInfo>) {
+private fun TopAppsSection(apps: List<AppUsageInfo>, onAppClick: (AppUsageInfo) -> Unit) {
     Column {
         Text(
             text = "📱 Top Data Users",
@@ -207,7 +245,7 @@ private fun TopAppsSection(apps: List<AppUsageInfo>) {
             ) {
                 Column {
                     apps.take(5).forEach { app ->
-                        AppListItem(app)
+                        AppListItem(app, onClick = { onAppClick(app) })
                     }
                 }
             }
@@ -216,7 +254,7 @@ private fun TopAppsSection(apps: List<AppUsageInfo>) {
 }
 
 @Composable
-private fun AppListItem(app: AppUsageInfo) {
+private fun AppListItem(app: AppUsageInfo, onClick: () -> Unit) {
     val trustColor = when {
         app.trustScore >= 80 -> Success
         app.trustScore >= 50 -> Warning
@@ -228,6 +266,7 @@ private fun AppListItem(app: AppUsageInfo) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable { onClick() }
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {

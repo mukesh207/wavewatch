@@ -17,12 +17,15 @@ data class DashboardUiState(
     val nearbyDevices: List<BluetoothDeviceInfo> = emptyList(),
     val hasUsageStatsPermission: Boolean = false,
     val hasBluetoothPermission: Boolean = false,
-    val errorMessage: String? = null
+    val errorMessage: String? = null,
+    val aiAnalysisText: String? = null,
+    val analyzingApp: AppUsageInfo? = null
 )
 
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
-    private val securityRepository: SecurityRepository
+    private val securityRepository: SecurityRepository,
+    private val aiAssistantRepository: com.wavewatch.data.repository.AIAssistantRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(DashboardUiState())
@@ -32,6 +35,27 @@ class DashboardViewModel @Inject constructor(
         checkPermissions()
         loadDashboardData()
         observeNetwork()
+    }
+
+    fun analyzeApp(app: AppUsageInfo) {
+        _uiState.update { it.copy(analyzingApp = app, aiAnalysisText = "Initializing On-Device AI...") }
+        viewModelScope.launch {
+            try {
+                aiAssistantRepository.analyzeSuspiciousActivity(
+                    appName = app.appName,
+                    permissionCount = app.permissionCount,
+                    dataUsageMb = app.dataUsageBytes / (1024 * 1024)
+                ).collect { text ->
+                    _uiState.update { it.copy(aiAnalysisText = text) }
+                }
+            } catch (e: Exception) {
+                _uiState.update { it.copy(aiAnalysisText = "Error generating analysis: ${e.message}") }
+            }
+        }
+    }
+
+    fun dismissAnalysis() {
+        _uiState.update { it.copy(analyzingApp = null, aiAnalysisText = null) }
     }
 
     private fun checkPermissions() {

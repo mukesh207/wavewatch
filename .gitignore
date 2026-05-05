@@ -27,6 +27,16 @@ Thumbs.db
 *.aab
 *.cxx/
 local.properties
+.idea/
+.gradle/
+build/
+capture/
+*.iml
+
+# Android Tools
+platform-tools/
+platform-tools.zip
+cmdline-tools.zip
 
 # Docs
 docs/*.tmp

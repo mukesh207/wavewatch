@@ -15,7 +15,8 @@ import javax.inject.Singleton
 class SecurityRepository @Inject constructor(
     private val appUsageDataSource: AppUsageDataSource,
     private val bluetoothDataSource: BluetoothDataSource,
-    private val networkDataSource: NetworkDataSource
+    private val networkDataSource: NetworkDataSource,
+    private val aiAssistantRepository: AIAssistantRepository
 ) {
     /**
      * Calculate overall security score
@@ -172,7 +173,10 @@ class SecurityRepository @Inject constructor(
             ))
         }
         
-        return alerts.sortedByDescending { it.timestamp }
+        // Enhance alerts with AI context
+        val enhancedAlerts = alerts.map { aiAssistantRepository.enhanceAlert(it) }
+        
+        return enhancedAlerts.sortedByDescending { it.timestamp }
     }
 }
 

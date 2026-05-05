@@ -1,6 +1,7 @@
 package com.wavewatch.di
 
 import android.content.Context
+import com.wavewatch.data.repository.AIAssistantRepository
 import com.wavewatch.data.repository.SecurityRepository
 import com.wavewatch.data.source.AppUsageDataSource
 import com.wavewatch.data.source.BluetoothDataSource
@@ -39,10 +40,12 @@ object AppModule {
     fun provideSecurityRepository(
         appUsageDataSource: AppUsageDataSource,
         bluetoothDataSource: BluetoothDataSource,
-        networkDataSource: NetworkDataSource
+        networkDataSource: NetworkDataSource,
+        aiAssistantRepository: AIAssistantRepository
     ): SecurityRepository = SecurityRepository(
         appUsageDataSource,
         bluetoothDataSource,
-        networkDataSource
+        networkDataSource,
+        aiAssistantRepository
     )
 }

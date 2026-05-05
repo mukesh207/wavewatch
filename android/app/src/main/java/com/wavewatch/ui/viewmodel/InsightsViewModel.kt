@@ -41,12 +41,14 @@ data class SecurityTip(
     val id: String,
     val emoji: String,
     val title: String,
-    val description: String
+    val description: String,
+    val details: String
 )
 
 @HiltViewModel
 class InsightsViewModel @Inject constructor(
-    private val securityRepository: SecurityRepository
+    private val securityRepository: SecurityRepository,
+    private val aiAssistantRepository: com.wavewatch.data.repository.AIAssistantRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(InsightsUiState())
@@ -83,7 +85,8 @@ class InsightsViewModel @Inject constructor(
                     daysUntilReset = 9
                 )
                 
-                val tips = getSecurityTips()
+                // Get AI generated dynamic tips
+                val tips = aiAssistantRepository.generateDynamicTips(3)
                 
                 _uiState.update { it.copy(
                     isLoading = false,
@@ -98,41 +101,6 @@ class InsightsViewModel @Inject constructor(
                 )}
             }
         }
-    }
-
-    private fun getSecurityTips(): List<SecurityTip> {
-        return listOf(
-            SecurityTip(
-                id = "1",
-                emoji = "🔐",
-                title = "Enable Two-Factor Authentication",
-                description = "Add an extra layer of security to your accounts by enabling 2FA wherever available."
-            ),
-            SecurityTip(
-                id = "2",
-                emoji = "📱",
-                title = "Review App Permissions",
-                description = "Regularly check which apps have access to your camera, microphone, and location."
-            ),
-            SecurityTip(
-                id = "3",
-                emoji = "🌐",
-                title = "Use Secure Networks",
-                description = "Avoid connecting to public WiFi without a VPN. Your data could be intercepted."
-            ),
-            SecurityTip(
-                id = "4",
-                emoji = "🔄",
-                title = "Keep Apps Updated",
-                description = "Updates often include security patches. Enable auto-updates for critical apps."
-            ),
-            SecurityTip(
-                id = "5",
-                emoji = "🔋",
-                title = "Monitor Background Activity",
-                description = "Some apps drain battery by running in the background. They might also be sending data."
-            )
-        )
     }
 
     fun refresh() {

@@ -1,6 +1,7 @@
 package com.wavewatch.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -223,26 +224,64 @@ private fun DataBudgetSection(usage: DataUsageInfo) {
 
 @Composable
 private fun SecurityTipCard(tip: SecurityTip) {
+    var isExpanded by remember { mutableStateOf(false) }
+
     Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { isExpanded = !isExpanded },
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = DarkCard)
     ) {
-        Row(
-            modifier = Modifier.padding(16.dp),
-            verticalAlignment = Alignment.Top
+        Column(
+            modifier = Modifier.padding(16.dp)
         ) {
-            Text(tip.emoji, fontSize = 24.sp)
-            Spacer(Modifier.width(12.dp))
-            Column {
+            Row(
+                verticalAlignment = Alignment.Top
+            ) {
+                Text(tip.emoji, fontSize = 24.sp)
+                Spacer(Modifier.width(12.dp))
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = tip.title,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Spacer(Modifier.height(4.dp))
+                    Text(
+                        text = tip.description,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = TextMuted
+                    )
+                }
+            }
+
+            androidx.compose.animation.AnimatedVisibility(
+                visible = isExpanded,
+                enter = androidx.compose.animation.expandVertically() + androidx.compose.animation.fadeIn(),
+                exit = androidx.compose.animation.shrinkVertically() + androidx.compose.animation.fadeOut()
+            ) {
+                Column {
+                    Spacer(Modifier.height(12.dp))
+                    Divider(color = TextMuted.copy(alpha = 0.2f))
+                    Spacer(Modifier.height(12.dp))
+                    Text(
+                        text = tip.details,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        lineHeight = 20.sp
+                    )
+                }
+            }
+
+            TextButton(
+                onClick = { isExpanded = !isExpanded },
+                modifier = Modifier.align(Alignment.End),
+                contentPadding = PaddingValues(0.dp)
+            ) {
                 Text(
-                    text = tip.title,
-                    fontWeight = FontWeight.SemiBold
-                )
-                Spacer(Modifier.height(4.dp))
-                Text(
-                    text = tip.description,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = TextMuted
+                    text = if (isExpanded) "Show Less" else "Read More",
+                    fontSize = 12.sp,
+                    color = Primary
                 )
             }
         }
